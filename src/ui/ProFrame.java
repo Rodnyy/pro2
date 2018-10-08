@@ -39,7 +39,7 @@ public class ProFrame extends JFrame {
         button.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                ToDoItem item = new ToDoItem("Test");
+                ToDoItem item = new ProDialog().getItem();
                 model.add(item);
             }
         });
