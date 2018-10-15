@@ -2,6 +2,8 @@ package ui;
 
 import model.TableModel;
 import model.ToDoItem;
+import rss.RssItem;
+import rss.RssParser;
 
 import javax.swing.*;
 import java.awt.*;
@@ -19,14 +21,14 @@ public class ProFrame extends JFrame {
     public static void main(String... args) {
 
         ProFrame proFrame = new ProFrame();
-        proFrame.init(width,height);
+        proFrame.init(width, height);
 
     }
 
-    private void init(int width,int height){
+    private void init(int width, int height) {
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         setVisible(true);
-        setSize(width,height);
+        setSize(width, height);
         setTitle("Programování 2");
 
         JPanel toolbar = new JPanel();
@@ -69,36 +71,52 @@ public class ProFrame extends JFrame {
         model = new TableModel();
 
         JTable table = new JTable(model);
-        add(new JScrollPane(table),BorderLayout.CENTER);
+        add(new JScrollPane(table), BorderLayout.CENTER);
         pack();
 
         setLocationRelativeTo(null);
+
+        parse();
     }
 
-    private void saveItems(){
-        try{
+    private void parse() {
+        try {
+
+            RssParser parser = new RssParser(new FileInputStream(new File("download.xml")));
+            List<RssItem> rssItems = parser.parseItems();
+            for (RssItem rssItem : rssItems) {
+                System.out.println(rssItem.toString());
+            }
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    private void saveItems() {
+        try {
             ObjectOutputStream stream = new ObjectOutputStream(new FileOutputStream(new File("our.db")));
             stream.writeObject(model.getItems());
             stream.flush();
             stream.close();
 
-            }catch (Exception e){
+        } catch (Exception e) {
 
             e.printStackTrace();
 
-            }
+        }
 
     }
 
-    private void loadItems(){
-        try{
+    private void loadItems() {
+        try {
             ObjectInputStream stream = new ObjectInputStream(new FileInputStream(new File("our.db")));
             List<ToDoItem> items = (List<ToDoItem>) stream.readObject();
             stream.close();
             model.setItems(items);
             model.fireTableDataChanged();
 
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }

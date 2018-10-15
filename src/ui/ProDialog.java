@@ -13,7 +13,7 @@ public class ProDialog extends JDialog {
 
     public ProDialog (){
         setModal(true);
-        
+
 
         JTextArea txtContent = new JTextArea("Vložte obsah");
         add(txtContent, BorderLayout.NORTH);
