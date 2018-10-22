@@ -10,6 +10,9 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.*;
+import java.net.URL;
+import java.net.URLConnection;
+import java.util.ArrayList;
 import java.util.List;
 
 public class ProFrame extends JFrame {
@@ -38,12 +41,9 @@ public class ProFrame extends JFrame {
         button.setText("Přidat poznámku");
         toolbar.add(button);
 
-        button.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                ToDoItem item = new ProDialog().getItem();
-                model.add(item);
-            }
+        button.addActionListener(e -> {
+            ToDoItem item = new ProDialog().getItem();
+            model.add(item);
         });
 
         JButton buttSave = new JButton();
@@ -70,24 +70,45 @@ public class ProFrame extends JFrame {
 
         model = new TableModel();
 
-        JTable table = new JTable(model);
-        add(new JScrollPane(table), BorderLayout.CENTER);
+        //JTable table = new JTable(model);
+        //add(new JScrollPane(table), BorderLayout.CENTER);
+
+        JTextField txtFieldRssUrl = new JTextField("Vaše URL adresa");
+        add(txtFieldRssUrl,BorderLayout.CENTER);
+
+
+        JButton buttParse = new JButton();
+        buttParse.setText("Načti URL");
+        buttParse.addActionListener(e -> {
+            addFeed(txtFieldRssUrl.getText());
+        });
+        toolbar.add(buttParse);
+
         pack();
 
         setLocationRelativeTo(null);
 
-        parse();
+        reedFeed();
     }
 
-    private void parse() {
+    private void parse(String url) {
         try {
 
-            RssParser parser = new RssParser(new FileInputStream(new File("download.xml")));
+           // RssParser parser = new RssParser(new FileInputStream(new File("download.xml")));
+
+           // String url = "http://www.eurofotbal.cz/feed/rss/premier-league/";
+            URLConnection connection= new URL(url).openConnection();
+            connection.connect();
+            InputStream stream = connection.getInputStream();
+            RssParser parser = new RssParser(stream);
+
             List<RssItem> rssItems = parser.parseItems();
             for (RssItem rssItem : rssItems) {
                 System.out.println(rssItem.toString());
             }
-        } catch (FileNotFoundException e) {
+            stream.close();
+
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
@@ -119,6 +140,47 @@ public class ProFrame extends JFrame {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    private void  addFeed(String url){
+        try{
+        File file = new File("feed.txt");
+        if(!file.exists()){
+            file.createNewFile();
+        }
+
+        FileWriter fileWriter = new FileWriter(file, true);
+        BufferedWriter writer = new BufferedWriter(fileWriter);
+
+        writer.write(url);
+        writer.newLine();
+        writer.flush();
+
+        }catch (Exception e){
+
+        }
+    }
+
+    private void reedFeed (){
+        try{
+            List<String> urls = new ArrayList<>();
+            File file = new File("feed.txt");
+            FileReader fileReader = new FileReader(file);
+            BufferedReader reader = new BufferedReader(fileReader);
+
+            String line;
+            while ((line = reader.readLine())!=null){
+                urls.add(line);
+            }
+            for(String url: urls){
+                System.out.println(url);
+            }
+
+        }catch (Exception e){
+
+
+        }
+
     }
 }
 
