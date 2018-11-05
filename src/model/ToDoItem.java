@@ -27,6 +27,7 @@ public class ToDoItem implements Serializable {
     public boolean isDone() {
         return done;
     }
+
     public void setDone(boolean done){
         this.done = done;
     }
@@ -34,4 +35,5 @@ public class ToDoItem implements Serializable {
     public void setContent(String content) {
         this.content = content;
     }
+
 }

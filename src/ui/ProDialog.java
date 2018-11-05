@@ -1,41 +1,45 @@
 package ui;
 
+import java.awt.GridLayout;
+
+import javax.swing.JButton;
+import javax.swing.JDialog;
+import javax.swing.JLabel;
+import javax.swing.JTextField;
+
 import model.ToDoItem;
 
-import javax.swing.*;
-import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 public class ProDialog extends JDialog {
 
     private ToDoItem item;
 
-    public ProDialog (){
+    public ProDialog() {
         setModal(true);
 
+        setLayout(new GridLayout(2, 2));
 
-        JTextArea txtContent = new JTextArea("Vložte obsah");
-        add(txtContent, BorderLayout.NORTH);
+        JLabel jLabel = new JLabel("Obsah");
+        add(jLabel);
 
-        JButton btnOK = new JButton("OK");
-        add(btnOK);
-        btnOK.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                item = new ToDoItem(txtContent.getText());
+        JTextField jTextField = new JTextField();
+        add(jTextField);
 
-                setVisible(false);
-            }
+        JButton btnOk = new JButton("OK");
+        add(btnOk);
+
+        btnOk.addActionListener(action -> {
+            // plnit ToDoItem
+            item = new ToDoItem(jTextField.getText());
+            setVisible(false);
         });
 
-        pack();
-        setLocationRelativeTo(null);
-
+        pack(); //shluk dle vnitřních prvků
+        setLocationRelativeTo(null); //center
     }
 
-    public ToDoItem getItem(){
-        setVisible(true); //zmrazí puvodní vlakno
-        return  item;
+    public ToDoItem getItem() {
+        setVisible(true); //zmrazí původní vlákno
+        return item;
     }
 }

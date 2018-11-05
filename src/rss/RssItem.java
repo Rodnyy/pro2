@@ -2,9 +2,7 @@ package rss;
 
 public class RssItem {
 
-    private String title;
-    private String link;
-    private String description;
+    private String title, link, description;
 
     public String getTitle() {
         return title;
@@ -32,8 +30,6 @@ public class RssItem {
 
     @Override
     public String toString() {
-        String text = title + "  " + link + " " + description;
-
-        return text;
+        return String.format("%s\n%s\n%s", title, link, description);
     }
 }

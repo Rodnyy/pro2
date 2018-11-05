@@ -4,11 +4,12 @@ import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
 
-import javax.xml.parsers.SAXParser;
-import javax.xml.parsers.SAXParserFactory;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.xml.parsers.SAXParser;
+import javax.xml.parsers.SAXParserFactory;
 
 public class RssParser {
 
@@ -27,20 +28,19 @@ public class RssParser {
 
                 RssItem item;
                 boolean title, link, description;
-                //Boolean = null, true, false //// boolean = false / true
 
                 @Override
                 public void startElement(String uri, String localName, String qName, Attributes attributes) throws SAXException {
                     if (qName.equalsIgnoreCase("item")) {
                         item = new RssItem();
                     }
-                    if (qName.equalsIgnoreCase(("title")) && item != null) {
+                    if (qName.equalsIgnoreCase("title") && item != null) {
                         title = true;
                     }
-                    if (qName.equalsIgnoreCase(("link")) && item != null) {
+                    if (qName.equalsIgnoreCase("link") && item != null) {
                         link = true;
                     }
-                    if (qName.equalsIgnoreCase(("description")) && item != null) {
+                    if (qName.equalsIgnoreCase("description") && item != null) {
                         description = true;
                     }
                     super.startElement(uri, localName, qName, attributes);
@@ -75,10 +75,11 @@ public class RssParser {
             parser.parse(inputStream, handler);
 
         } catch (Exception e) {
-            e.printStackTrace();
+            //ignored
         } finally {
             return items;
         }
 
+        //http://www.eurofotbal.cz/feed/rss/premier-league/
     }
 }
