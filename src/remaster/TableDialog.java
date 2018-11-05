@@ -30,6 +30,7 @@ public class TableDialog extends JDialog {
         setLocationRelativeTo(null);
     }
     public void open(){
+        //
         setVisible(true);
     }
 }
