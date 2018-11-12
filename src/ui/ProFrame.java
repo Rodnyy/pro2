@@ -198,38 +198,4 @@ public class ProFrame extends JFrame {
         }
     }
 
-    private List<FeedItem> getAllFeeds() {
-        List<FeedItem> feedItems = new ArrayList<>();
-        try {
-            File file = new File("feedItems.csv");
-            FileReader reader = new FileReader(file);
-            BufferedReader bufferedReader = new BufferedReader(reader);
-            bufferedReader.readLine(); // přeskočit první řádek
-            String line;
-            while ((line = bufferedReader.readLine()) != null) {
-                feedItems.add(FeedItem.parseFromCSV(line));
-            }
-        } catch (Exception e) {
-
-        }
-        return feedItems;
-    }
-
-    private void saveAllFeeds(List<FeedItem> items) {
-        try {
-            File file = new File("feedItems.csv");
-            FileWriter writer = new FileWriter(file);
-            BufferedWriter bufferedWriter = new BufferedWriter(writer);
-            bufferedWriter.write("url;addedMillis;shouldShow;alias");
-            bufferedWriter.newLine();
-            bufferedWriter.flush();
-            for (FeedItem item : items){
-                bufferedWriter.write(item.toString());
-                bufferedWriter.newLine();
-                bufferedWriter.flush();
-            }
-        } catch (Exception e) {
-
-        }
-    }
 }

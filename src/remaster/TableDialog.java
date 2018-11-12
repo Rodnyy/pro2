@@ -1,13 +1,17 @@
 package remaster;
 
-import model.TableModel;
+import model.FeedTableModel;
+import model.FeedItem;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.List;
 
 public class TableDialog extends JDialog {
 
-    public TableDialog(){
+    FeedTableModel model;
+
+    public TableDialog(List<FeedItem> feedItems){
         setModal(true);
         setLayout(new BorderLayout());
 
@@ -15,12 +19,31 @@ public class TableDialog extends JDialog {
 
 
         JButton finishBtn = new JButton("Dokončit");
-        toolbar.add(finishBtn,BorderLayout.EAST);
+        JButton addButton = new JButton("Přidej");
+        JTextField urlField = new JTextField();
+        urlField.setPreferredSize(new Dimension(300,30));
+        toolbar.add(urlField, BorderLayout.EAST);
+        toolbar.add(addButton, BorderLayout.WEST);
+        toolbar.add(finishBtn,BorderLayout.WEST);
         add(toolbar,BorderLayout.NORTH);
 
-        TableModel model = new TableModel();
-        JTable talbe = new JTable(model);
-        add(new JScrollPane(talbe), BorderLayout.CENTER);
+
+
+        model = new FeedTableModel();
+        model.setItems(feedItems);
+        JTable table = new JTable(model);
+        add(new JScrollPane(table), BorderLayout.CENTER);
+
+        addButton.addActionListener(action ->{
+            FeedItem item = new FeedItem();
+            item.setUrl(urlField.getText());
+            item.setShouldShow(true);
+            item.setAlias("To do");
+            item.setAddedMillis(System.currentTimeMillis());
+            model.add(item);
+
+            urlField.setText("");
+        });
 
         finishBtn.addActionListener(action -> {
             setVisible(false);

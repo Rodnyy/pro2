@@ -1,7 +1,9 @@
 package remaster;
 
+import model.FeedItem;
 import rss.RssItem;
 import rss.RssParser;
+import utils.Utils;
 
 import javax.swing.*;
 import java.awt.*;
@@ -44,7 +46,12 @@ public class RssFrame extends JFrame {
         JPanel controlPanel = new JPanel(new BorderLayout());
         JButton editButton = new JButton("Edit");
         editButton.addActionListener(action ->{
-            new TableDialog().open();;
+
+            List<FeedItem> items = Utils.getAllFeeds();
+
+            new TableDialog(items).open();
+
+            Utils.saveAllFeeds(items);
         });
         controlPanel.add(editButton,BorderLayout.WEST);
 
