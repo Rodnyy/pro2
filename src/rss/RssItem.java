@@ -2,7 +2,18 @@ package rss;
 
 public class RssItem {
 
-    private String title, link, description;
+    private String title;
+    private String link;
+    private String description;
+    private String pubDate;
+
+    public String getPubDate() {
+        return pubDate;
+    }
+
+    public void setPubDate(String pubDate) {
+        this.pubDate = pubDate;
+    }
 
     public String getTitle() {
         return title;

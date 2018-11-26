@@ -5,11 +5,16 @@ import rss.RssItem;
 import rss.RssParser;
 import utils.Utils;
 
+import javax.rmi.CORBA.Util;
 import javax.swing.*;
 import java.awt.*;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
+import java.net.URLConnection;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 public class RssFrame extends JFrame {
@@ -19,6 +24,49 @@ public class RssFrame extends JFrame {
     public static void main(String[] args) {
         RssFrame frame = new RssFrame();
         frame.init(800,600);
+    }
+
+    private void loadFromFeedItem(List<RssItem> items, FeedItem item){
+        //TODO validace URL
+        if(!item.getUrl().contains("http")){
+            return;
+        }
+
+        try{
+            URLConnection conn = new URL(item.getUrl()).openConnection();
+            items.addAll(new RssParser(conn.getInputStream()).parseItems());
+
+        }catch (Exception e){
+
+        }
+    }
+
+    private List<RssItem> loadItems(){
+        List<RssItem> list = new ArrayList<>();
+        //TODO - načítání URL, sorting comparator, filtry
+
+        List<FeedItem> allFeeds = Utils.getAllFeeds();
+        for(FeedItem feed: allFeeds){
+            if(feed.isShouldShow()){
+                loadFromFeedItem(list,feed);
+            }
+        }
+
+        Collections.sort(list, new Comparator<RssItem>() {
+            @Override
+            public int compare(RssItem o1, RssItem o2) {
+                long milis1 = Utils.getMillisFromDateString(o1.getPubDate());
+                long milis2 = Utils.getMillisFromDateString(o2.getPubDate());
+
+                return Long.compare(milis2,milis1);
+            }
+        });
+        return list;
+    }
+
+    private void loadCards(){
+        List<RssItem> list = loadItems();
+
     }
 
     private void test() {

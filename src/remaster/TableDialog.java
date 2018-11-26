@@ -20,11 +20,15 @@ public class TableDialog extends JDialog {
 
         JButton finishBtn = new JButton("Dokončit");
         JButton addButton = new JButton("Přidej");
+        JButton removeBtn = new JButton("Smazat");
+        JPanel buttonLayout = new JPanel((new FlowLayout()));
         JTextField urlField = new JTextField();
         urlField.setPreferredSize(new Dimension(300,30));
         toolbar.add(urlField, BorderLayout.EAST);
-        toolbar.add(addButton, BorderLayout.WEST);
-        toolbar.add(finishBtn,BorderLayout.WEST);
+        buttonLayout.add(addButton);
+        buttonLayout.add(removeBtn);
+        toolbar.add(buttonLayout, BorderLayout.WEST);
+        toolbar.add(finishBtn,BorderLayout.EAST);
         add(toolbar,BorderLayout.NORTH);
 
 
@@ -47,6 +51,10 @@ public class TableDialog extends JDialog {
 
         finishBtn.addActionListener(action -> {
             setVisible(false);
+        });
+
+        removeBtn.addActionListener(action-> {
+            model.remove(table.getSelectedRow());
         });
 
         pack();

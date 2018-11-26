@@ -22,6 +22,15 @@ public class FeedTableModel extends AbstractTableModel {
         fireTableDataChanged();
     }
 
+    public void remove(int position){
+        if(position< 0|| position >= feedItems.size()){
+            return;
+        }else {
+            feedItems.remove(position);
+            fireTableDataChanged();
+        }
+    }
+
     @Override
     public int getRowCount() {
         return feedItems.size();
