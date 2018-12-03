@@ -8,9 +8,12 @@ import utils.Utils;
 import javax.rmi.CORBA.Util;
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
+import java.net.URL;
 import java.net.URLConnection;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -72,7 +75,7 @@ public class RssFrame extends JFrame {
     private void test() {
         try{
             InputStream is = new FileInputStream(new File("download.xml"));
-            List<RssItem> items = new RssParser(is).parseItems();
+            List<RssItem> items = loadItems();
 
             for(RssItem item: items){
                 content.add(new CardView(item));
@@ -110,6 +113,8 @@ public class RssFrame extends JFrame {
         add(new JScrollPane(content),BorderLayout.CENTER);
 
         setVisible(true);
+
+
     }
 
 }

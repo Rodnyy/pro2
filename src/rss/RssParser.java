@@ -43,7 +43,7 @@ public class RssParser {
                     if (qName.equalsIgnoreCase("description") && item != null) {
                         description = true;
                     }
-                    if(qName.equalsIgnoreCase("pubdate") && item != null{
+                    if (qName.equalsIgnoreCase("pubdate") && item != null) {
                         pubDate = true;
                     }
                     super.startElement(uri, localName, qName, attributes);

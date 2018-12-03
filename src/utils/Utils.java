@@ -11,6 +11,26 @@ import java.util.Locale;
 
 public class Utils {
 
+    public static void saveFeedItem(FeedItem item){
+
+        try{
+            File file = new File("feedItems.csv");
+            FileReader reader = new FileReader(file);
+            BufferedReader bufferedReader = new BufferedReader(reader);
+            bufferedReader.readLine(); // přeskočit první řádek
+            String line;
+            while ((line = bufferedReader.readLine()) != null) {
+                if(line.contains(item.getUrl())){
+                    //Přepiš řádek
+                }
+            }
+
+        }catch (Exception e){
+
+        }
+
+    }
+
     public static List<FeedItem> getAllFeeds() {
         List<FeedItem> feedItems = new ArrayList<>();
         try {
